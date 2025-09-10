@@ -1,0 +1,151 @@
+[
+  {
+    "id": "msg_001",
+    "text": "URGENT: Production server is down! Users can't login. Need immediate help!",
+    "user": "john_doe",
+    "channel": "alerts",
+    "timestamp": "2025-09-10T20:42:22.729277",
+    "thread_ts": null,
+    "reactions": [
+      "fire",
+      "eyes",
+      "sos"
+    ],
+    "category": "urgent",
+    "priority_score": 1.0,
+    "similar_tickets": []
+  },
+  {
+    "id": "msg_002",
+    "text": "Can someone help me understand how the OAuth authentication flow works? I'm getting confused with the redirect URLs.",
+    "user": "jane_smith",
+    "channel": "dev-help",
+    "timestamp": "2025-09-10T20:42:22.730892",
+    "thread_ts": null,
+    "reactions": [
+      "question"
+    ],
+    "category": "question",
+    "priority_score": 0.45000000000000007,
+    "similar_tickets": []
+  },
+  {
+    "id": "msg_003",
+    "text": "Found a critical bug in the user registration form. When users enter special characters, the form crashes with a 500 error. Stack trace attached.",
+    "user": "mike_wilson",
+    "channel": "bug-reports",
+    "timestamp": "2025-09-10T20:42:22.731056",
+    "thread_ts": null,
+    "reactions": [
+      "bug",
+      "thumbsup"
+    ],
+    "category": "bug_report",
+    "priority_score": 0.85,
+    "similar_tickets": []
+  },
+  {
+    "id": "msg_004",
+    "text": "Feature request: Can we add a dark mode toggle to the user settings page? Many users have been asking for this enhancement.",
+    "user": "sarah_johnson",
+    "channel": "feature-requests",
+    "timestamp": "2025-09-10T20:42:22.731247",
+    "thread_ts": null,
+    "reactions": [
+      "bulb",
+      "thumbsup",
+      "moon"
+    ],
+    "category": "feature_request",
+    "priority_score": 0.7000000000000001,
+    "similar_tickets": []
+  },
+  {
+    "id": "msg_005",
+    "text": "The CI/CD pipeline failed again on the staging deployment. Looks like there's an issue with the Docker build process. Can someone investigate?",
+    "user": "alex_brown",
+    "channel": "devops",
+    "timestamp": "2025-09-10T20:42:22.731441",
+    "thread_ts": null,
+    "reactions": [
+      "wrench"
+    ],
+    "category": "deployment",
+    "priority_score": 0.65,
+    "similar_tickets": []
+  },
+  {
+    "id": "msg_006",
+    "text": "I need access to the production database for debugging. Can someone grant me read-only permissions? My username is alex.brown.",
+    "user": "alex_brown",
+    "channel": "access-requests",
+    "timestamp": "2025-09-10T20:42:22.731653",
+    "thread_ts": null,
+    "reactions": [
+      "lock"
+    ],
+    "category": "access_request",
+    "priority_score": 0.9500000000000001,
+    "similar_tickets": []
+  },
+  {
+    "id": "msg_007",
+    "text": "FYI: Scheduled maintenance window this Sunday 2-4 AM EST. The main application will be temporarily unavailable. Please plan accordingly.",
+    "user": "admin",
+    "channel": "announcements",
+    "timestamp": "2025-09-10T20:42:22.731872",
+    "thread_ts": null,
+    "reactions": [
+      "loudspeaker",
+      "thumbsup"
+    ],
+    "category": "general",
+    "priority_score": 0.35,
+    "similar_tickets": []
+  },
+  {
+    "id": "msg_008",
+    "text": "Another authentication issue here. Users are getting randomly logged out after 10 minutes. This might be related to the session timeout configuration we changed last week.",
+    "user": "tom_anderson",
+    "channel": "bug-reports",
+    "timestamp": "2025-09-10T20:42:22.732139",
+    "thread_ts": null,
+    "reactions": [
+      "lock",
+      "bug"
+    ],
+    "category": "bug_report",
+    "priority_score": 0.65,
+    "similar_tickets": []
+  },
+  {
+    "id": "msg_009",
+    "text": "How do we handle GDPR data export requests? Do we have a standard process for this? Customer is asking for all their data.",
+    "user": "lisa_martinez",
+    "channel": "compliance",
+    "timestamp": "2025-09-10T20:42:22.732455",
+    "thread_ts": null,
+    "reactions": [
+      "scales",
+      "question"
+    ],
+    "category": "question",
+    "priority_score": 0.65,
+    "similar_tickets": []
+  },
+  {
+    "id": "msg_010",
+    "text": "New API endpoint is ready for testing! Can someone from QA please review the documentation and run the test cases? Link in thread.",
+    "user": "david_lee",
+    "channel": "api-development",
+    "timestamp": "2025-09-10T20:42:22.732753",
+    "thread_ts": null,
+    "reactions": [
+      "checkmark",
+      "clipboard"
+    ],
+    "category": "question",
+    "priority_score": 0.6,
+    "similar_tickets": []
+  }
+]

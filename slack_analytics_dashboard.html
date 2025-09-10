@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slack Message Analytics - Local Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1A1A1A 0%, #2D3748 100%);
+            color: #FFFFFF;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #F39C12, #E74C3C);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #F39C12;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            color: #A0AEC0;
+            font-size: 1.1em;
+        }
+        
+        .section {
+            background: rgba(255, 255, 255, 0.05);
+            margin-bottom: 30px;
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .section-header {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .section-header h2 {
+            font-size: 1.5em;
+            color: #F39C12;
+        }
+        
+        .section-content {
+            padding: 20px;
+        }
+        
+        .message-card {
+            background: rgba(255, 255, 255, 0.08);
+            margin-bottom: 20px;
+            border-radius: 12px;
+            overflow: hidden;
+            border-left: 5px solid;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .message-card:hover {
+            transform: translateX(8px);
+            background: rgba(255, 255, 255, 0.12);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        .message-header {
+            padding: 18px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .message-content {
+            padding: 18px;
+        }
+        
+        .message-text {
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        .message-meta {
+            font-size: 0.9em;
+            color: #A0AEC0;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.85em;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        .category-badge {
+            color: white;
+        }
+        
+        .priority-badge {
+            background: #34495E;
+            color: #FFFFFF;
+        }
+        
+        .user-info {
+            color: #A0AEC0;
+            font-size: 0.9em;
+        }
+        
+        .similar-section {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .similar-ticket {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 8px;
+            border-left: 3px solid #3498DB;
+        }
+        
+        .similar-ticket-header {
+            font-weight: bold;
+            color: #3498DB;
+            margin-bottom: 5px;
+        }
+        
+        .similar-ticket-preview {
+            font-size: 0.9em;
+            color: #A0AEC0;
+            font-style: italic;
+        }
+        
+        .suggestion-card {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border-left: 5px solid #F39C12;
+            transition: transform 0.3s ease;
+        }
+        
+        .suggestion-card:hover {
+            transform: translateY(-3px);
+        }
+        
+        .suggestion-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 12px;
+            color: #F39C12;
+        }
+        
+        .suggestion-description {
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        
+        .suggestion-meta {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            font-size: 0.9em;
+        }
+        
+        .priority-critical { border-left-color: #FF4757; }
+        .priority-high { border-left-color: #FFA726; }
+        .priority-medium { border-left-color: #45B7D1; }
+        .priority-low { border-left-color: #66BB6A; }
+        
+        .legend {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .legend-color {
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            margin-right: 12px;
+        }
+        
+        .legend-label {
+            font-weight: 500;
+        }
+        
+        .no-data {
+            text-align: center;
+            padding: 40px;
+            color: #A0AEC0;
+            font-style: italic;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .message-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .suggestion-meta {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+        
+        .emoji {
+            font-size: 1.2em;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><span class="emoji">🚀</span>Slack Message Analytics</h1>
+            <p>Local Dashboard - Real-time Analysis of 10 Messages</p>
+            <p style="margin-top: 10px; font-size: 0.9em; color: #A0AEC0;">
+                Generated on N/A • No deployment required
+            </p>
+        </div>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">10</div>
+                <div class="stat-label">Total Messages</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">4</div>
+                <div class="stat-label">High Priority</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">7</div>
+                <div class="stat-label">Categories</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">0.69</div>
+                <div class="stat-label">Avg Priority</div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <div class="section-header">
+                <h2><span class="emoji">🎨</span>Category Legend</h2>
+            </div>
+            <div class="section-content">
+                <div class="legend">
+                    
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #FF6B6B"></div>
+                <div class="legend-label">🐛 Bug Report</div>
+            </div>
+        
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #4ECDC4"></div>
+                <div class="legend-label">✨ Feature Request</div>
+            </div>
+        
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #45B7D1"></div>
+                <div class="legend-label">❓ Question</div>
+            </div>
+        
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #FF4757"></div>
+                <div class="legend-label">🚨 Urgent</div>
+            </div>
+        
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #FFA726"></div>
+                <div class="legend-label">🚀 Deployment</div>
+            </div>
+        
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #AB47BC"></div>
+                <div class="legend-label">🔐 Access Request</div>
+            </div>
+        
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #66BB6A"></div>
+                <div class="legend-label">📢 General</div>
+            </div>
+        
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <div class="section-header">
+                <h2><span class="emoji">📋</span>Message Analysis (10 messages)</h2>
+            </div>
+            <div class="section-content">
+                
+            <div class="message-card priority-high" style="border-left-color: #FF4757">
+                <div class="message-header">
+                    <div>
+                        <span class="badge category-badge" style="background-color: #FF4757">
+                            🚨 URGENT
+                        </span>
+                        <span class="badge priority-badge">Priority: 1.00</span>
+                    </div>
+                    <div class="user-info">
+                        👤 @john_doe in #alerts
+                    </div>
+                </div>
+                <div class="message-content">
+                    <div class="message-text">URGENT: Production server is down! Users can't login. Need immediate help!</div>
+                    <div class="message-meta">
+                        <span>📅 2025-09-10 20:44:03</span>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+        
+            <div class="message-card priority-high" style="border-left-color: #AB47BC">
+                <div class="message-header">
+                    <div>
+                        <span class="badge category-badge" style="background-color: #AB47BC">
+                            🔐 ACCESS REQUEST
+                        </span>
+                        <span class="badge priority-badge">Priority: 0.95</span>
+                    </div>
+                    <div class="user-info">
+                        👤 @alex_brown in #access-requests
+                    </div>
+                </div>
+                <div class="message-content">
+                    <div class="message-text">I need access to the production database for debugging. Can someone grant me read-only permissions? My username is alex.brown.</div>
+                    <div class="message-meta">
+                        <span>📅 2025-09-10 20:44:03</span>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+        
+            <div class="message-card priority-high" style="border-left-color: #FF6B6B">
+                <div class="message-header">
+                    <div>
+                        <span class="badge category-badge" style="background-color: #FF6B6B">
+                            🐛 BUG REPORT
+                        </span>
+                        <span class="badge priority-badge">Priority: 0.85</span>
+                    </div>
+                    <div class="user-info">
+                        👤 @mike_wilson in #bug-reports
+                    </div>
+                </div>
+                <div class="message-content">
+                    <div class="message-text">Found a critical bug in the user registration form. When users enter special characters, the form crashes with a 500 error. Stack trace attached.</div>
+                    <div class="message-meta">
+                        <span>📅 2025-09-10 20:44:03</span>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+        
+            <div class="message-card priority-high" style="border-left-color: #4ECDC4">
+                <div class="message-header">
+                    <div>
+                        <span class="badge category-badge" style="background-color: #4ECDC4">
+                            ✨ FEATURE REQUEST
+                        </span>
+                        <span class="badge priority-badge">Priority: 0.70</span>
+                    </div>
+                    <div class="user-info">
+                        👤 @sarah_johnson in #feature-requests
+                    </div>
+                </div>
+                <div class="message-content">
+                    <div class="message-text">Feature request: Can we add a dark mode toggle to the user settings page? Many users have been asking for this enhancement.</div>
+                    <div class="message-meta">
+                        <span>📅 2025-09-10 20:44:03</span>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+        
+            <div class="message-card priority-medium" style="border-left-color: #FFA726">
+                <div class="message-header">
+                    <div>
+                        <span class="badge category-badge" style="background-color: #FFA726">
+                            🚀 DEPLOYMENT
+                        </span>
+                        <span class="badge priority-badge">Priority: 0.65</span>
+                    </div>
+                    <div class="user-info">
+                        👤 @alex_brown in #devops
+                    </div>
+                </div>
+                <div class="message-content">
+                    <div class="message-text">The CI/CD pipeline failed again on the staging deployment. Looks like there's an issue with the Docker build process. Can someone investigate?</div>
+                    <div class="message-meta">
+                        <span>📅 2025-09-10 20:44:03</span>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+        
+            <div class="message-card priority-medium" style="border-left-color: #FF6B6B">
+                <div class="message-header">
+                    <div>
+                        <span class="badge category-badge" style="background-color: #FF6B6B">
+                            🐛 BUG REPORT
+                        </span>
+                        <span class="badge priority-badge">Priority: 0.65</span>
+                    </div>
+                    <div class="user-info">
+                        👤 @tom_anderson in #bug-reports
+                    </div>
+                </div>
+                <div class="message-content">
+                    <div class="message-text">Another authentication issue here. Users are getting randomly logged out after 10 minutes. This might be related to the session timeout configuration we changed last week.</div>
+                    <div class="message-meta">
+                        <span>📅 2025-09-10 20:44:03</span>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+        
+            <div class="message-card priority-medium" style="border-left-color: #45B7D1">
+                <div class="message-header">
+                    <div>
+                        <span class="badge category-badge" style="background-color: #45B7D1">
+                            ❓ QUESTION
+                        </span>
+                        <span class="badge priority-badge">Priority: 0.65</span>
+                    </div>
+                    <div class="user-info">
+                        👤 @lisa_martinez in #compliance
+                    </div>
+                </div>
+                <div class="message-content">
+                    <div class="message-text">How do we handle GDPR data export requests? Do we have a standard process for this? Customer is asking for all their data.</div>
+                    <div class="message-meta">
+                        <span>📅 2025-09-10 20:44:03</span>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+        
+            <div class="message-card priority-medium" style="border-left-color: #45B7D1">
+                <div class="message-header">
+                    <div>
+                        <span class="badge category-badge" style="background-color: #45B7D1">
+                            ❓ QUESTION
+                        </span>
+                        <span class="badge priority-badge">Priority: 0.60</span>
+                    </div>
+                    <div class="user-info">
+                        👤 @david_lee in #api-development
+                    </div>
+                </div>
+                <div class="message-content">
+                    <div class="message-text">New API endpoint is ready for testing! Can someone from QA please review the documentation and run the test cases? Link in thread.</div>
+                    <div class="message-meta">
+                        <span>📅 2025-09-10 20:44:03</span>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+        
+            <div class="message-card priority-medium" style="border-left-color: #45B7D1">
+                <div class="message-header">
+                    <div>
+                        <span class="badge category-badge" style="background-color: #45B7D1">
+                            ❓ QUESTION
+                        </span>
+                        <span class="badge priority-badge">Priority: 0.45</span>
+                    </div>
+                    <div class="user-info">
+                        👤 @jane_smith in #dev-help
+                    </div>
+                </div>
+                <div class="message-content">
+                    <div class="message-text">Can someone help me understand how the OAuth authentication flow works? I'm getting confused with the redirect URLs.</div>
+                    <div class="message-meta">
+                        <span>📅 2025-09-10 20:44:03</span>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+        
+            <div class="message-card priority-medium" style="border-left-color: #66BB6A">
+                <div class="message-header">
+                    <div>
+                        <span class="badge category-badge" style="background-color: #66BB6A">
+                            📢 GENERAL
+                        </span>
+                        <span class="badge priority-badge">Priority: 0.35</span>
+                    </div>
+                    <div class="user-info">
+                        👤 @admin in #announcements
+                    </div>
+                </div>
+                <div class="message-content">
+                    <div class="message-text">FYI: Scheduled maintenance window this Sunday 2-4 AM EST. The main application will be temporarily unavailable. Please plan accordingly.</div>
+                    <div class="message-meta">
+                        <span>📅 2025-09-10 20:44:03</span>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+        
+            </div>
+        </div>
+        
+        <div class="section">
+            <div class="section-header">
+                <h2><span class="emoji">🤖</span>Automation Suggestions</h2>
+            </div>
+            <div class="section-content">
+                
+            <div class="suggestion-card priority-medium">
+                <div class="suggestion-title">
+                    ℹ️ Automated FAQ Bot
+                </div>
+                <div class="suggestion-description">
+                    Found 3 questions. A chatbot could handle common queries automatically.
+                </div>
+                <div class="suggestion-meta">
+                    <span><strong>Priority:</strong> Medium</span>
+                    <span><strong>Impact:</strong> Reduces support load by 60%</span>
+                    <span><strong>Effort:</strong> High</span>
+                </div>
+            </div>
+        
+            <div class="suggestion-card priority-high">
+                <div class="suggestion-title">
+                    ⚠️ Automated Bug Triage
+                </div>
+                <div class="suggestion-description">
+                    Found 2 bug reports. Implement automatic priority assignment and routing.
+                </div>
+                <div class="suggestion-meta">
+                    <span><strong>Priority:</strong> High</span>
+                    <span><strong>Impact:</strong> Improves response time by 50%</span>
+                    <span><strong>Effort:</strong> Medium</span>
+                </div>
+            </div>
+        
+            <div class="suggestion-card priority-medium">
+                <div class="suggestion-title">
+                    ℹ️ Deployment Status Automation
+                </div>
+                <div class="suggestion-description">
+                    Automate deployment notifications and status updates to reduce manual communication.
+                </div>
+                <div class="suggestion-meta">
+                    <span><strong>Priority:</strong> Medium</span>
+                    <span><strong>Impact:</strong> Improves team awareness</span>
+                    <span><strong>Effort:</strong> Low</span>
+                </div>
+            </div>
+        
+            <div class="suggestion-card priority-critical">
+                <div class="suggestion-title">
+                    🔥 Urgent Issue Escalation
+                </div>
+                <div class="suggestion-description">
+                    Found 3 urgent issues. Set up automatic escalation workflows.
+                </div>
+                <div class="suggestion-meta">
+                    <span><strong>Priority:</strong> Critical</span>
+                    <span><strong>Impact:</strong> Prevents service downtime</span>
+                    <span><strong>Effort:</strong> Low</span>
+                </div>
+            </div>
+        
+            </div>
+        </div>
+        
+        <div class="section">
+            <div class="section-header">
+                <h2><span class="emoji">📊</span>Detailed Analytics</h2>
+            </div>
+            <div class="section-content">
+                
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+            <div style="background: rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 10px;">
+                <h3 style="color: #F39C12; margin-bottom: 15px;">📊 Category Breakdown</h3>
+                <div style="margin-bottom: 8px;">🚨 Urgent: 1 messages</div><div style="margin-bottom: 8px;">❓ Question: 3 messages</div><div style="margin-bottom: 8px;">🐛 Bug Report: 2 messages</div><div style="margin-bottom: 8px;">✨ Feature Request: 1 messages</div><div style="margin-bottom: 8px;">🚀 Deployment: 1 messages</div><div style="margin-bottom: 8px;">🔐 Access Request: 1 messages</div><div style="margin-bottom: 8px;">📢 General: 1 messages</div>
+            </div>
+            <div style="background: rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 10px;">
+                <h3 style="color: #F39C12; margin-bottom: 15px;">⚡ Priority Distribution</h3>
+                <div style="margin-bottom: 10px;">🔥 High Priority: 4 messages</div>
+                <div style="margin-bottom: 10px;">⚠️ Medium Priority: 6 messages</div>
+                <div style="margin-bottom: 10px;">ℹ️ Low Priority: 0 messages</div>
+            </div>
+        </div>
+    
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Simple interactivity
+        document.querySelectorAll('.message-card').forEach(card => {
+            card.addEventListener('click', function() {
+                this.style.transform = this.style.transform === 'scale(1.02)' ? 'scale(1)' : 'scale(1.02)';
+            });
+        });
+        
+        // Show load time
+        window.addEventListener('load', function() {
+            console.log('Dashboard loaded successfully!');
+        });
+    </script>
+</body>
+</html>

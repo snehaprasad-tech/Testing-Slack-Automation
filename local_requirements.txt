@@ -1,0 +1,19 @@
+# Minimal requirements for local-only version
+# These can be installed with --user flag to avoid system conflicts
+
+# Core web framework (lightweight)
+flask==2.3.3
+flask-cors==4.0.0
+
+# Basic data processing (usually pre-installed)
+# pandas  # Optional - we'll use built-in libraries instead
+# numpy   # Optional - we'll use built-in libraries instead
+
+# Text processing (built-in alternatives available)
+# nltk    # Optional - we'll use regex instead
+# scikit-learn  # Optional - we'll implement simple similarity
+
+# Web interface
+plotly==5.17.0
+dash==2.14.1
+dash-bootstrap-components==1.5.0
