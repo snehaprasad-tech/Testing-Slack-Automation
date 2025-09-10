@@ -1,0 +1,57 @@
+[
+  {
+    "id": "1",
+    "text": "Our production server is down! Users can't access the application. This is urgent!",
+    "user": "john_doe",
+    "channel": "alerts",
+    "timestamp": "2025-09-10 19:36:51",
+    "category": "urgent",
+    "confidence": 1.0,
+    "priority": 1.0,
+    "color": "#FF4757"
+  },
+  {
+    "id": "3",
+    "text": "I found a bug in the user registration form. Getting 500 errors when submitting.",
+    "user": "mike_wilson",
+    "channel": "bug-reports",
+    "timestamp": "2025-09-10 17:36:51",
+    "category": "bug_report",
+    "confidence": 0.67,
+    "priority": 0.3,
+    "color": "#FF6B6B"
+  },
+  {
+    "id": "2",
+    "text": "Can someone help me understand how the authentication flow works?",
+    "user": "jane_smith",
+    "channel": "dev-help",
+    "timestamp": "2025-09-10 18:36:51",
+    "category": "question",
+    "confidence": 1.0,
+    "priority": 0.1,
+    "color": "#45B7D1"
+  },
+  {
+    "id": "4",
+    "text": "Feature request: Can we add a dark mode toggle to the settings?",
+    "user": "sarah_johnson",
+    "channel": "feature-requests",
+    "timestamp": "2025-09-10 16:36:51",
+    "category": "feature_request",
+    "confidence": 1.0,
+    "priority": 0.1,
+    "color": "#4ECDC4"
+  },
+  {
+    "id": "5",
+    "text": "FYI: Scheduled maintenance this Sunday 2-4 AM. App will be unavailable.",
+    "user": "admin",
+    "channel": "announcements",
+    "timestamp": "2025-09-10 08:36:51",
+    "category": "general",
+    "confidence": 0.33,
+    "priority": 0.0,
+    "color": "#66BB6A"
+  }
+]

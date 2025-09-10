@@ -1,0 +1,226 @@
+/* Custom CSS for Slack Analytics Dashboard */
+
+/* Global Styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #1A1A1A !important;
+    color: #FFFFFF !important;
+}
+
+/* Custom Card Styles */
+.card {
+    border: none !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3) !important;
+    transition: all 0.3s ease !important;
+}
+
+.card:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Message Card Drag and Drop */
+.message-card {
+    cursor: move;
+    transition: all 0.3s ease;
+    border-radius: 8px !important;
+}
+
+.message-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5) !important;
+}
+
+.message-card.dragging {
+    opacity: 0.7;
+    transform: rotate(5deg);
+}
+
+/* Category Badges */
+.badge {
+    font-size: 0.75rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.5px !important;
+}
+
+/* Button Styles */
+.btn {
+    border-radius: 6px !important;
+    font-weight: 500 !important;
+    transition: all 0.3s ease !important;
+}
+
+.btn:hover {
+    transform: translateY(-1px) !important;
+}
+
+/* Custom Upload Area */
+.upload-area {
+    background: linear-gradient(135deg, #2D3748 0%, #1A202C 100%);
+    border: 2px dashed #F39C12;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.upload-area:hover {
+    border-color: #E67E22;
+    background: linear-gradient(135deg, #34495E 0%, #2C3E50 100%);
+}
+
+/* Stats Cards */
+.stats-card {
+    background: linear-gradient(135deg, #2D3748 0%, #1A202C 100%);
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.stats-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+}
+
+/* Priority Indicators */
+.priority-high {
+    border-left: 4px solid #E74C3C !important;
+}
+
+.priority-medium {
+    border-left: 4px solid #F39C12 !important;
+}
+
+.priority-low {
+    border-left: 4px solid #27AE60 !important;
+}
+
+/* Category Colors */
+.category-bug_report { background-color: #FF6B6B !important; }
+.category-feature_request { background-color: #4ECDC4 !important; }
+.category-question { background-color: #45B7D1 !important; }
+.category-urgent { background-color: #FF4757 !important; }
+.category-deployment { background-color: #FFA726 !important; }
+.category-access_request { background-color: #AB47BC !important; }
+.category-general { background-color: #66BB6A !important; }
+
+/* Animation Classes */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.pulse {
+    animation: pulse 2s infinite;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #2D3748;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #F39C12;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #E67E22;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .card {
+        margin-bottom: 1rem !important;
+    }
+    
+    .stats-card {
+        padding: 1rem !important;
+    }
+    
+    .message-card {
+        font-size: 0.9rem !important;
+    }
+}
+
+/* Dark Theme Plotly Charts */
+.js-plotly-plot .plotly .modebar {
+    background-color: #2D3748 !important;
+}
+
+.js-plotly-plot .plotly .modebar-btn {
+    color: #FFFFFF !important;
+}
+
+/* Loading Spinner */
+.loading-spinner {
+    border: 4px solid #2D3748;
+    border-top: 4px solid #F39C12;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 20px auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Notification Styles */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    max-width: 300px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* Interactive Elements */
+.interactive-element {
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.interactive-element:hover {
+    opacity: 0.8;
+}
+
+/* Drag and Drop Zones */
+.drop-zone {
+    border: 2px dashed #666;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    transition: all 0.3s ease;
+    min-height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.drop-zone.drag-over {
+    border-color: #F39C12;
+    background-color: rgba(243, 156, 18, 0.1);
+}
+
+.drop-zone.has-items {
+    border-style: solid;
+    background-color: rgba(52, 73, 94, 0.3);
+}
